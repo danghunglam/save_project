@@ -1,0 +1,32 @@
+public function exportCsv(Request $request)
+    {
+        ini_set('memory_limit', '2G');
+        ini_set('max_execution_time', 0);
+        $cartonModel = new CartonModel();
+        $userId = $this->getUserId();
+        $input = $request->getQueryParams();
+        $data = $cartonModel->cartonsHaveDamage($userId, $input, 'cartons', PHP_INT_MAX)->toArray();
+
+        $title = [
+            'cus_code'      => 'Customer Code',
+            'cus_name'      => "Customer Name",
+            'gr_hdr_num'    => "GR Num",
+            'ctnr_num'      => "CTNR Num",
+            'ref_code'      => "Ref Code",
+            'po'            => "PO",
+            'dmg_name'      => "Damaged Type",
+            'dmg_qty'       => "Damaged QTY",
+            'item_id'       => "Item ID",
+            'sku'           => "SKU",
+            'size'          => "Size",
+            'color'         => "Color",
+            'batch'         => "Lot",
+            'ctn_pack_size' => "Pack Size",
+            'des'           => "Description",
+            'plt_num'       => "Pallet Num",
+            'plt_rfid'      => "Pallet RFID",
+            'loc_name'      => "Location",
+        ];
+        Export::showFile("My name", $title, $data['data']);
+        die;
+    }
